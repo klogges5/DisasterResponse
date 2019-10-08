@@ -34,6 +34,8 @@ def clean_data(df):
         categories[column] = categories[column].str[-1]
         # convert column from string to numeric
         categories[column] = categories[column].astype('int64')
+    # in related are some values 2, replace this with 1 (most used)
+    categories.loc[categories['related'] > 1, ['related']] = 1
     # drop the original categories column from `df`
     df.drop(columns='categories',inplace=True)
     # concatenate the original dataframe with the new `categories` dataframe

@@ -12,7 +12,7 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split
 from sklearn.pipeline import Pipeline
 from sklearn.feature_extraction.text import CountVectorizer, TfidfTransformer
-from sklearn.metrics import classification_report, accuracy_score
+from sklearn.metrics import classification_report
 from sklearn.model_selection import GridSearchCV
 
 def load_data(database_filepath):
@@ -61,12 +61,9 @@ def build_model():
         ('clf', MultiOutputClassifier(RandomForestClassifier()))
     ])
     
-    print(pipeline.get_params())
     parameters = {
-        #'vect__ngram_range': ((1, 1), (1,2)),
-        #'clf__estimator__n_estimators' :[50,100]
-        #'vect__ngram_range' : (1,2),
-        'clf__estimator__n_estimators' : [100]
+        'vect__ngram_range': ((1, 1), (1,2)),
+        'clf__estimator__n_estimators' : [50, 100]
         }
     
     cv = GridSearchCV(pipeline, parameters, cv=3, n_jobs=-1)
@@ -89,7 +86,7 @@ def evaluate_model(model, X_test, y_test, category_names):
     
     y_pred = model.predict(X_test)
     accuracy = (y_pred == y_test).mean()
-    print ('Accuracy: {}'.format(accuracy))
+    print ('Accuracy:\n {}'.format(accuracy))
     try:
         # runs in jupyter lab
         print(classification_report(y_test, y_pred, target_names=category_names))
@@ -97,7 +94,7 @@ def evaluate_model(model, X_test, y_test, category_names):
         for i in range(len(category_names)):
             print('{}:\n {}'.format(category_names[i],
                   classification_report(y_test.iloc[:, i], y_pred[:, i])))
-        print('classification_report not working')
+        print('classification_report on whole dataset not working')
         pass
 
 

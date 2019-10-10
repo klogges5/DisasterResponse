@@ -53,6 +53,10 @@ def index():
     genre_names = list(genre_counts.index)
     
     y = df.drop(columns=['id', 'message', 'original', 'genre'])
+    
+    # counts of related messages
+    related = y[y.related == 1].sum()[1:].sort_values(ascending=False)
+    
     # correlation on categories
     correlation_categories = y.corr().values
     category_names = list(y.columns)
@@ -96,7 +100,30 @@ def index():
                 },
                 'xaxis': {
                     'tickangle': -45
-                }
+                },
+                'margin' : dict(
+                        b = 200)
+            }
+        },
+        {
+            'data': [
+                Bar(
+                    x=related.index,
+                    y=related
+                )
+            ],
+
+            'layout': {
+                'title': 'count of related disaster types',
+                'yaxis': {
+                    'title': "Count"
+                },
+                'xaxis': {
+                    'title': "disaster types",
+                    'tickangle' : -45
+                },
+                'margin' : dict(
+                        b = 200)
             }
         },
         {
@@ -111,7 +138,9 @@ def index():
             'layout': {
                 'title': 'Correlation of Categories',
                 'xaxis': {'tickangle': -45},
-                'yaxis': {'automargin': True}
+                'yaxis': {'automargin': True},
+                'margin' : dict(
+                        b = 200)
             }
         },
     ]

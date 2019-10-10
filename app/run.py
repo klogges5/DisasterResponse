@@ -8,7 +8,7 @@ from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords
 
 from flask import Flask
-from flask import render_template, request, jsonify
+from flask import render_template, request
 from plotly.graph_objs import Bar, Heatmap
 from sklearn.externals import joblib
 from sqlalchemy import create_engine
@@ -103,7 +103,7 @@ def index():
             'data': [
                 Heatmap(
                     x=category_names,
-                    y=category_names[:-1],
+                    y=category_names,
                     z=correlation_categories
                 )    
             ],
